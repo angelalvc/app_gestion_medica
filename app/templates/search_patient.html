@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Paciente</title>
+    <link rel="stylesheet" href="/static/styles/stylelogin.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Buscar Paciente</h1>
+        <form method="get" action="/patients/search">
+            <input type="text" name="nombre" placeholder="Nombre del paciente" required>
+            <button type="submit">Buscar</button>
+        </form>
+        {% if pacientes %}
+            <ul>
+                {% for paciente in pacientes %}
+                    <li>{{ paciente.nombre }} - {{ paciente.email }} - {{ paciente.telefono }}</li>
+                {% endfor %}
+            </ul>
+        {% elif error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <a href="/dashboard" class="btn">Volver al Dashboard</a>
+    </div>
+</body>
+</html>

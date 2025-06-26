@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Cita</title>
+    <link rel="stylesheet" href="/static/styles/stylelogin.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Buscar Cita</h1>
+        <form method="get" action="/appointments/search">
+            <input type="text" name="paciente_id" placeholder="ID del paciente" required>
+            <button type="submit">Buscar</button>
+        </form>
+        {% if citas %}
+            <ul>
+                {% for cita in citas %}
+                    <li>{{ cita.fecha }} {{ cita.hora }} - {{ cita.motivo }} - {{ cita.diagnostico }}</li>
+                {% endfor %}
+            </ul>
+        {% elif error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <a href="/dashboard" class="btn">Volver al Dashboard</a>
+    </div>
+</body>
+</html>

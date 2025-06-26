@@ -1,0 +1,109 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6fb;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-container h1 {
+    margin-bottom: 1.5rem;
+    color: #2d3a4b;
+    font-size: 1.7rem;
+}
+
+.login-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-container input, .login-container select {
+    margin-bottom: 1rem;
+    padding: 0.7rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.login-container input:focus, .login-container select:focus {
+    border: 1.5px solid #007bff;
+}
+
+.login-container button {
+    padding: 0.7rem;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    transition: background 0.2s;
+}
+
+.login-container button:hover {
+    background: #0056b3;
+}
+
+.login-container a {
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+}
+
+.error {
+    color: #d32f2f;
+    background: #ffeaea;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.success {
+    color: #388e3c;
+    background: #eaffea;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 0.7rem;
+    background: #007bff;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-size: 1rem;
+    transition: background 0.2s;
+}
+.btn:hover {
+    background: #0056b3;
+}
+
+@media (max-width: 500px) {
+    .login-container {
+        width: 95vw;
+        padding: 1.5rem 0.5rem;
+    }
+}
