@@ -143,16 +143,35 @@ async def search_patient(request: Request, nombre: str = ""):
 
 # Mostrar formulario de búsqueda de citas
 @app.get("/appointments/search", response_class=HTMLResponse)
-async def search_appointment_form(request: Request, paciente_id: str = None):
+async def search_appointment_form(
+    request: Request, 
+    paciente_id: str = None,
+    paciente_nombre: str = None,
+    fecha: str = None
+):
     if not is_authenticated(request):
         return RedirectResponse("/")
-    citas_list = None
+    citas_list = []
     error = None
+    
+    #Búsqueda por ID del paciente
     if paciente_id:
         docs = db.collection('citas').where('paciente_id', '==', paciente_id).stream()
         citas_list = [Cita(**doc.to_dict()) for doc in docs]
-        if not citas_list:
-            error = "No se encontraron citas para ese paciente."
+    #Búsqueda por nombre del paciente
+    elif paciente_nombre:
+        pacientes = db.collection('pacientes').where('nombre', '==', paciente_nombre).stream()
+        pacientes_list = [p for p in pacientes]
+        if pacientes_list:
+            paciente_id = pacientes_list[0].id
+            docs = db.collection('citas').where('paciente_id', '==', paciente_id).stream()
+            citas_list = [Cita(**doc.to_dict()) for doc in docs]
+    #Búsqueda por fecha        
+    elif fecha:
+        docs = db.collection('citas').where('fecha', '==', fecha).stream()
+        citas_list = [Cita(**doc.to_dict()) for doc in docs]        
+    if not citas_list:    
+        error = "No se encontraron citas para ese paciente."
     return templates.TemplateResponse("search_appointment.html", {"request": request, "citas": citas_list, "error": error})
 
 if __name__ == "__main__":

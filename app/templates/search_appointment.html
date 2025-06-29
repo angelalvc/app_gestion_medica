@@ -9,7 +9,9 @@
     <div class="login-container">
         <h1>Buscar Cita</h1>
         <form method="get" action="/appointments/search">
-            <input type="text" name="paciente_id" placeholder="ID del paciente" required>
+            <input type="text" name="paciente_id" placeholder="ID del paciente">
+            <input type="text" name="paciente_nombre" placeholder="Nombre del paciente" >
+            <input type="date" name="fecha" >
             <button type="submit">Buscar</button>
         </form>
         {% if citas %}
