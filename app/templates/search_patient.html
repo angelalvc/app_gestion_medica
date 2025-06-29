@@ -6,6 +6,18 @@
     <link rel="stylesheet" href="/static/styles/stylelogin.css">
 </head>
 <body>
+    <!-- Botón para abrir el menú -->
+    <img alt="Abrir menú" src="../static/baseline-density-medium.svg" class="menu-toggle" aria-label="Abrir menú" onclick="document.getElementById('sidebar-menu').classList.toggle('open')">
+
+    <!-- Sidebar del menú -->
+    <nav id="sidebar-menu" class="sidebar-menu">
+        <a href="/dashboard">Inicio</a>
+        <a href="/patients/register">Registrar Paciente</a>
+        <a href="/appointments/register">Registrar Cita</a>
+        <a href="/patients/list">Buscar Paciente</a>
+        <a href="/appointments/search">Buscar Cita</a>
+        <a href="/auth/logout">Cerrar sesión</a>
+    </nav>
     <div class="login-container">
         <h1>Buscar Paciente</h1>
         <form method="get" action="/patients/search">
@@ -21,7 +33,6 @@
         {% elif error %}
             <p class="error">{{ error }}</p>
         {% endif %}
-        <a href="/dashboard" class="btn">Volver al Dashboard</a>
     </div>
 </body>
 </html>

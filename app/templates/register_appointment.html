@@ -6,26 +6,35 @@
     <link rel="stylesheet" href="../static/styles/stylelogin.css">
 </head>
 <body>
-        <a href="/dashboard" class="arrow-dashboard" title="Volver al Dashboard" aria-label="Volver al Dashboard">
-            <img src="../static/arrow-right.svg" width="50" height="50" alt="Volver al Dashboard">
-        </a>
-        <div class="login-container">
-            <h1>Registrar Cita</h1>
-            <form method="POST" action="/appointments/register">
-                <input type="text" name="paciente_nombre" placeholder="Nombre del paciente" required>
-                <input type="date" name="fecha" required>
-                <input type="time" name="hora" required>
-                <input type="text" name="motivo" placeholder="Motivo" required>
-                <input type="text" name="diagnostico" placeholder="Diagnóstico" required>
-                <input type="text" name="procedimiento" placeholder="Procedimiento" required>
-                <button type="submit">Registrar</button>
-            </form>
-            {% if error %}
-                <p class="error">{{ error }}</p>
-            {% endif %}
-            {% if message %}
-                <p class="success">{{ message }}</p>
-            {% endif %}
-        </div>
+    <!-- Botón para abrir el menú -->
+    <img alt="Abrir menú" src="../static/baseline-density-medium.svg" class="menu-toggle" aria-label="Abrir menú" onclick="document.getElementById('sidebar-menu').classList.toggle('open')">
+
+    <!-- Sidebar del menú -->
+    <nav id="sidebar-menu" class="sidebar-menu">
+        <a href="/dashboard">Inicio</a>
+        <a href="/patients/register">Registrar Paciente</a>
+        <a href="/appointments/register">Registrar Cita</a>
+        <a href="/patients/list">Buscar Paciente</a>
+        <a href="/appointments/search">Buscar Cita</a>
+        <a href="/auth/logout">Cerrar sesión</a>
+    </nav>
+    <div class="login-container">
+        <h1>Registrar Cita</h1>
+        <form method="POST" action="/appointments/register">
+            <input type="text" name="paciente_nombre" placeholder="Nombre del paciente" required>
+            <input type="date" name="fecha" required>
+            <input type="time" name="hora" required>
+            <input type="text" name="motivo" placeholder="Motivo" required>
+            <input type="text" name="diagnostico" placeholder="Diagnóstico" required>
+            <input type="text" name="procedimiento" placeholder="Procedimiento" required>
+            <button type="submit">Registrar</button>
+        </form>
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        {% if message %}
+            <p class="success">{{ message }}</p>
+        {% endif %}
+    </div>
 </body>
 </html>
