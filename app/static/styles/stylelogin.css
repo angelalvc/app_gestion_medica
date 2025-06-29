@@ -101,7 +101,34 @@ body {
     background: #0056b3;
 }
 
+.arrow-dashboard {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+    z-index: 9999;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s;
+    margin: 0;
+}
+
+
+.arrow-dashboard:hover {
+    transform: scale(1.1);
+}
+.arrow-dashboard img {
+    display: block;
+    width: 70px;
+    height: 70px;
+}
+
 @media (max-width: 500px) {
+    .arrow-dashboard {
+        top: 12px;
+        right: 12px;
+    }
     .login-container {
         width: 95vw;
         padding: 1.5rem 0.5rem;
