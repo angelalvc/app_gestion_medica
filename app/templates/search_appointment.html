@@ -6,17 +6,26 @@
     <link rel="stylesheet" href="/static/styles/stylelogin.css">
 </head>
 <body>
-    <!-- Botón para abrir el menú -->
     <img alt="Abrir menú" src="../static/baseline-density-medium.svg" class="menu-toggle" aria-label="Abrir menú" onclick="document.getElementById('sidebar-menu').classList.toggle('open')">
-
-    <!-- Sidebar del menú -->
     <nav id="sidebar-menu" class="sidebar-menu">
-        <a href="/dashboard">Inicio</a>
-        <a href="/patients/register">Registrar Paciente</a>
-        <a href="/appointments/register">Registrar Cita</a>
-        <a href="/patients/list">Buscar Paciente</a>
-        <a href="/appointments/search">Buscar Cita</a>
-        <a href="/auth/logout">Cerrar sesión</a>
+        <a href="/dashboard">
+            <img src="../static/home.svg" alt="Inicio" class="icon-menu">Inicio
+        </a>
+        <a href="/patients/register">
+            <img src="../static/user-plus.svg" alt="Registrar paciente" class="icon-menu">Registrar Paciente
+        </a>
+        <a href="/appointments/register">
+            <img src="../static/clipboard-plus.svg" alt="Registrar cita" class="icon-menu">Registrar Cita
+        </a>
+        <a href="/patients/list">
+            <img src="../static/user-search.svg" alt="Buscar paciente" class="icon-menu">Buscar Paciente
+        </a>
+        <a href="/appointments/search">
+            <img src="../static/clipboard-search.svg" alt="Buscar cita" class="icon-menu">Buscar Cita
+        </a>
+        <a href="/auth/logout">
+            <img src="../static/logout-2.svg" alt="Cerrar sesión" class="icon-menu">Cerrar sesión
+        </a>
     </nav>
     <div class="login-container">
         <h1>Buscar Cita</h1>
@@ -26,15 +35,21 @@
             <input type="date" name="fecha" >
             <button type="submit">Buscar</button>
         </form>
-        {% if citas %}
-            <ul>
+        <div class="cards-container">
+            {% if citas %}
                 {% for cita in citas %}
-                    <li>{{ cita.fecha }} {{ cita.hora }} - {{ cita.motivo }} - {{ cita.diagnostico }}</li>
+                    <div class="card">
+                        <h3>Cita: {{ cita.fecha }} {{ cita.hora }}</h3>
+                        <p><strong>Motivo:</strong> {{ cita.motivo }}</p>
+                        <p><strong>Diagnóstico:</strong> {{ cita.diagnostico }}</p>
+                        <p><strong>Procedimiento:</strong> {{ cita.procedimiento }}</p>
+                        <!-- Aquí puedes agregar botones o acciones futuras -->
+                    </div>
                 {% endfor %}
-            </ul>
-        {% elif error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
+            {% elif error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
