@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% if paciente %}
+            Expediente de {{ paciente.nombre }}
+        {% else %}
+        {% endif %}
+    </title>
+    <link rel="stylesheet" href="/static/styles/stylelogin.css">
+</head>
+<body>
+    <img alt="Abrir menú" src="../static/baseline-density-medium.svg" class="menu-toggle" aria-label="Abrir menú" onclick="document.getElementById('sidebar-menu').classList.toggle('open')">
+    <nav id="sidebar-menu" class="sidebar-menu">
+        <a href="/dashboard">
+            <img src="../static/home.svg" alt="Inicio" class="icon-menu">Inicio
+        </a>
+        <a href="/patients/register">
+            <img src="../static/user-plus.svg" alt="Registrar paciente" class="icon-menu">Registrar Paciente
+        </a>
+        <a href="/appointments/register">
+            <img src="../static/clipboard-plus.svg" alt="Registrar cita" class="icon-menu">Registrar Cita
+        </a>
+        <a href="/patients/list">
+            <img src="../static/user-search.svg" alt="Buscar paciente" class="icon-menu">Buscar Paciente
+        </a>
+        <a href="/appointments/search">
+            <img src="../static/clipboard-search.svg" alt="Buscar cita" class="icon-menu">Buscar Cita
+        </a>
+        <a href="/auth/logout">
+            <img src="../static/logout-2.svg" alt="Cerrar sesión" class="icon-menu">Cerrar sesión
+        </a>
+    </nav>
+    <div class="login-container">
+        {% if paciente %}
+            <h1>Expediente de {{ paciente.nombre }}</h1>
+            <div class="card">
+                <p><strong>Email:</strong> {{ paciente.email }}</p>
+                <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+                <p><strong>Edad:</strong> {{ paciente.edad }}</p>
+                <p><strong>Sexo:</strong> {{ paciente.sexo }}</p>
+            </div>
+            <h2>Citas registradas</h2>
+            <div class="cards-container">
+                {% if citas %}
+                    {% for cita in citas %}
+                        <div class="card">
+                            <h3>{{ cita.fecha }} {{ cita.hora }}</h3>
+                            <p><strong>Motivo:</strong> {{ cita.motivo }}</p>
+                            <p><strong>Diagnóstico:</strong> {{ cita.diagnostico }}</p>
+                            <p><strong>Procedimiento:</strong> {{ cita.procedimiento }}</p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No hay citas registradas.</p>
+                {% endif %}
+            </div>
+        {% elif error %}
+            <h1>Error</h1>
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+</body>
+</html>

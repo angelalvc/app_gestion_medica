@@ -136,7 +136,11 @@ async def search_patient(request: Request, nombre: str = ""):
     if not is_authenticated(request):
         return RedirectResponse("/")
     docs = db.collection('pacientes').where('nombre', '==', nombre).stream()
-    pacientes_list = [Paciente(**doc.to_dict()) for doc in docs]
+    pacientes_list = []
+    for doc in docs:
+        data = doc.to_dict()
+        data['id'] = doc.id  # Agrega el ID del documento Firestore
+        pacientes_list.append(Paciente(**data))
     if not pacientes_list:
         return templates.TemplateResponse("search_patient.html", {"request": request, "error": "Paciente no encontrado"})
     return templates.TemplateResponse("search_patient.html", {"request": request, "pacientes": pacientes_list})
@@ -174,6 +178,26 @@ async def search_appointment_form(
         error = "No se encontraron citas para ese paciente."
     return templates.TemplateResponse("search_appointment.html", {"request": request, "citas": citas_list, "error": error})
 
+@app.get("/records/{paciente_id}", response_class=HTMLResponse)
+async def expediente_paciente(request: Request, paciente_id: str):
+    if not is_authenticated(request):
+        return RedirectResponse("/")
+    # Obtener datos del paciente
+    doc = db.collection('pacientes').document(paciente_id).get()
+    if not doc.exists:
+        return templates.TemplateResponse(
+            "records.html",
+            {"request": request,"paciente": None,"citas": [] ,"error": "Paciente no encontrado"})
+    paciente = doc.to_dict()
+    # Obtener citas del pacientes
+    citas_docs = db.collection('citas').where('paciente_id', '==', paciente_id).stream()
+    citas = [cita.to_dict() for cita in citas_docs]
+    return templates.TemplateResponse(
+        "records.html",
+        {"request": request, "paciente": paciente, "citas": citas})
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
+                
+              
