@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>Dashboard Doctor</title>
     <link rel="stylesheet" href="../static/styles/stylelogin.css">
 </head>
 <body>
@@ -27,13 +27,44 @@
             <img src="../static/logout-2.svg" alt="Cerrar sesión" class="icon-menu">Cerrar sesión
         </a>
     </nav>
-    <div class="login-container">
-        <h1>Bienvenido al Dashboard</h1>
-        <a href="/patients/register" class="btn">Registrar Paciente</a>
-        <a href="/patients/list" class="btn">Buscar paciente</a>
-        <a href="/appointments/register" class="btn">Registrar Cita</a>
-        <a href="/appointments/search" class="btn">Buscar cita</a>
-        <a href="/auth/logout" class="btn">Cerrar sesión</a>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h2>Dashboard</h2>
+            <div class="user-info">
+                Nombre de Usuario: {{ usuario.nombre }}
+            </div>
+        </header>
+        <div class="dashboard-summary">
+            <div class="summary-card">
+                <span class="summary-title">Próxima cita</span>
+                <span class="summary-main">{{ proxima_cita.fecha }} {{ proxima_cita.hora }}</span>
+                <span class="summary-sub">{{ proxima_cita.paciente_nombre }}</span>
+            </div>
+            <div class="summary-card">
+                <span class="summary-title">Citas para hoy</span>
+                <span class="summary-main">{{ citas_hoy|length }}</span>
+                <span class="summary-sub">Citas para mañana: {{ citas_manana|length }}</span>
+            </div>
+        </div>
+        <div class="dashboard-main">
+            <div class="next-appointment-card">
+                <span class="summary-title">Próxima cita</span>
+                <h1>{{ proxima_cita.paciente_nombre }}</h1>
+                <h2>{{ proxima_cita.hora }}</h2>
+                <p>¿Iniciar?</p>
+            </div>
+            <div class="appointments-list-card">
+                <span class="summary-title">Citas de hoy</span>
+                <ul>
+                    {% for cita in citas_hoy %}
+                        <li>
+                            <strong>{{ cita.paciente_nombre }}</strong> - {{ cita.hora }}<br>
+                            <span>{{ cita.motivo }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 </body>
 </html>

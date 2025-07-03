@@ -26,5 +26,6 @@ class Cita(BaseModel):
     fecha: str #formato YYYY-MM-DD
     hora: str #formato HH:MM
     motivo: str
+    tipo: str
     diagnostico: str
     procedimiento: str        

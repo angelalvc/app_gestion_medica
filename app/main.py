@@ -12,6 +12,7 @@ from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from datetime import datetime, timedelta
 from services.services import verify_user
 from starlette.middleware.sessions import SessionMiddleware
 from routers import auth, patients, appointments
@@ -56,7 +57,43 @@ async def login(request: Request, username: str = Form(...), password: str = For
 async def dashboard(request: Request):
     if not is_authenticated(request):
         return RedirectResponse("/")
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    
+    # Obtener usuario (ajusta según tu sistema de sesiones)
+    usuario = {"nombre": request.session.get("usuario", "Doctor")}
+
+    # Fechas para filtrar
+    hoy = datetime.now().date().isoformat()
+    manana = (datetime.now() + timedelta(days=1)).date().isoformat()
+
+    # Citas para hoy
+    citas_hoy_docs = db.collection('citas').where('fecha', '==', hoy).stream()
+    citas_hoy = [doc.to_dict() for doc in citas_hoy_docs]
+
+    # Citas para mañana
+    citas_manana_docs = db.collection('citas').where('fecha', '==', manana).stream()
+    citas_manana = [doc.to_dict() for doc in citas_manana_docs]
+    
+    # Próxima cita (la más cercana a partir de ahora)
+    todas_citas_docs = db.collection('citas').stream()
+    todas_citas = [doc.to_dict() for doc in todas_citas_docs]
+    ahora = datetime.now().strftime("%H:%M")
+    proxima_cita = None
+    # Filtra por fecha >= hoy y hora >= ahora
+    futuras = [c for c in todas_citas if c['fecha'] >= hoy and c['hora'] >= ahora]
+    if futuras:
+        proxima_cita = sorted(futuras, key=lambda c: (c['fecha'], c['hora']))[0]
+    elif citas_hoy:
+        proxima_cita = sorted(citas_hoy, key=lambda c: c['hora'])[0]
+    else:
+        proxima_cita = {"fecha": "", "hora": "", "paciente_nombre": "Sin próximas citas"}
+
+    return templates.TemplateResponse("dashboard.html", {
+        "request": request,
+        "usuario": usuario,
+        "proxima_cita": proxima_cita,
+        "citas_hoy": citas_hoy,
+        "citas_manana": citas_manana
+    })
 
 @app.get("/auth/logout")
 async def logout(request: Request):

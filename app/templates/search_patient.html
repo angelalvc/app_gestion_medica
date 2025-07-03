@@ -33,19 +33,21 @@
             <input type="text" name="nombre" placeholder="Nombre del paciente" required>
             <button type="submit">Buscar</button>
         </form>
-        {% if pacientes %}
-            {% for paciente in pacientes %}
-                <div class="card">
-                    <h3>{{ paciente.nombre }}</h3>
-                    <p><strong>Email:</strong> {{ paciente.email }}</p>
-                    <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
-                    <p><strong>Edad:</strong> {{ paciente.edad }}</p>
-                    <p><strong>Sexo:</strong> {{ paciente.sexo }}</p>
-                </div>
-            {% endfor %}
-        {% elif error %}
-            <p class="error">{{ error }}</p>
-        {% endif %}
+        <div class="cards-container">
+            {% if pacientes %}
+                {% for paciente in pacientes %}
+                    <a href="/records/{{ paciente.id }}" class="card card-link">
+                        <h3>{{ paciente.nombre }}</h3>
+                        <p><strong>Email:</strong> {{ paciente.email }}</p>
+                        <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
+                        <p><strong>Edad:</strong> {{ paciente.edad }}</p>
+                        <p><strong>Sexo:</strong> {{ paciente.sexo }}</p>
+                    </a>
+                {% endfor %}
+            {% elif error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+        </div>
     </div>
 </body>
 </html>
