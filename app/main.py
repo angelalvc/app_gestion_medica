@@ -16,10 +16,12 @@ from services.services import verify_user
 from starlette.middleware.sessions import SessionMiddleware
 from routers import auth, patients, appointments
 from models.models import Cita, Paciente
+from dotenv import load_dotenv
 
 # Crear aplicación FastAPI
 app = FastAPI()
-app.add_middleware(SessionMiddleware, secret_key="supersecretkey")
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRET_KEY"))
+CREDENTIALS_PATH = os.getenv("CREDENTIALS_PATH", "./clave_privada.json")
 
 # Configurar Jinja2 para plantillas HTML
 templates = Jinja2Templates(directory="./templates")
