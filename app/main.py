@@ -1,5 +1,6 @@
 from firebase_admin import credentials, firestore
 import firebase_admin
+import os
 
 # Configura la ruta absoluta al archivo de credenciales
 CREDENTIALS_PATH =  "./clave_privada.json"
