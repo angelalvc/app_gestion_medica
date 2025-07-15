@@ -27,29 +27,47 @@
             <img src="../static/logout-2.svg" alt="Cerrar sesión" class="icon-menu">Cerrar sesión
         </a>
     </nav>
-    <div class="login-container">
-        <h1>Buscar Cita</h1>
-        <form method="get" action="/appointments/search">
-            <input type="text" name="paciente_id" placeholder="ID del paciente">
-            <input type="text" name="paciente_nombre" placeholder="Nombre del paciente" >
+    <div class="search-container">
+    <h1>Buscar citas</h1>
+    <div class="search-bar">
+        <form method="get" action="/appointments/search" class="search-form">
+            <input type="text" name="paciente_nombre" placeholder="Buscar por nombre de paciente...">
             <input type="date" name="fecha" >
-            <button type="submit">Buscar</button>
+            <button type="submit" class="filter-btn">Buscar</button>
         </form>
-        <div class="cards-container">
-            {% if citas %}
-                {% for cita in citas %}
-                    <div class="card">
-                        <h3>Cita: {{ cita.fecha }} {{ cita.hora }}</h3>
-                        <p><strong>Motivo:</strong> {{ cita.motivo }}</p>
-                        <p><strong>Diagnóstico:</strong> {{ cita.diagnostico }}</p>
-                        <p><strong>Procedimiento:</strong> {{ cita.procedimiento }}</p>
-                        <!-- Aquí puedes agregar botones o acciones futuras -->
-                    </div>
-                {% endfor %}
-            {% elif error %}
-                <p class="error">{{ error }}</p>
-            {% endif %}
-        </div>
     </div>
+    <div class="table-responsive">
+        <table class="appointments-table">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre del paciente</th>
+                    <th scope="col">Motivo</th>
+                    <th scope="col">Diagnóstico</th>
+                    <th scope="col">Procedimiento</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if citas %}
+                    {% for cita in citas %}
+                        <tr>
+                            <td>{{ cita.paciente_nombre }}</td>
+                            <td>{{ cita.motivo }}</td>
+                            <td>{{ cita.diagnostico }}</td>
+                            <td>{{ cita.procedimiento }}</td>
+                            <td>{{ cita.fecha }}</td>
+                            <td>{{ cita.hora }}</td>
+                        </tr>
+                    {% endfor %}
+                {% elif error %}
+                    <tr>
+                        <td colspan="6"><p class="error">{{ error }}</p></td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 </html>

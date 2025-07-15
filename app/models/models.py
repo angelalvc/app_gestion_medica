@@ -23,6 +23,7 @@ class Paciente(BaseModel):
 class Cita(BaseModel):
     id: Optional[str] = None
     paciente_id: Optional[str] = None
+    paciente_nombre: Optional[str] = None
     fecha: str #formato YYYY-MM-DD
     hora: str #formato HH:MM
     motivo: str

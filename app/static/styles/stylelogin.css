@@ -231,13 +231,221 @@ body {
     border-color: #007bff;
 }
 
-@media (max-width: 500px) {
-    .arrow-dashboard {
-        top: 12px;
-        right: 12px;
+.dashboard-container {
+    max-width: 2200px;
+    margin: 4rem auto;
+    padding: 4rem 5rem;
+    background: #fff;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.user-info {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+.dashboard-summary {
+    display: flex;
+    gap: 5rem;
+    margin-bottom: 5rem;
+}
+
+.summary-card {
+    background: #fafbfc;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 3.5rem 4rem;
+    min-width: 350px;
+    flex: 1;
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.summary-title {
+    font-size: 1rem;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.summary-main {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #222;
+}
+
+.summary-sub {
+    font-size: 1rem;
+    color: #888;
+    margin-top: 0.5rem;
+}
+
+.dashboard-main {
+    display: flex;
+    gap: 5rem;
+    margin-top: 5rem;
+}
+
+.next-appointment-card {
+    flex: 2;
+    background: #fafbfc;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 4rem 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.next-appointment-card h1 {
+    font-size: 2.2rem;
+    margin: 1rem 0 0.5rem 0;
+    text-align: center;
+}
+
+.next-appointment-card h2 {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+.appointments-list-card {
+    flex: 1;
+    background: #fafbfc;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 4rem 3rem;
+}
+
+.appointments-list-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.appointments-list-card li {
+    margin-bottom: 1.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.search-container {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    padding: 2.5rem 2rem;
+    max-width: 1100px;
+    min-width: 1100px;
+    margin: 3rem auto;
+    align-self: baseline;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.search-form {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.search-bar input[type="text"] {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.search-bar input[type="text"]:focus {
+    border: 1.5px solid #007bff;
+}
+
+.filter-btn {
+    background: #f5f5f5;
+    border: none;
+    border-radius: 8px;
+    padding: 0.7rem 1.2rem;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s;
+}
+.filter-btn:hover {
+    background: #e0e7ef;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background: #fff;
+}
+
+.appointments-table th, .appointments-table td {
+    padding: 1rem 0.7rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 1rem;
+}
+
+.appointments-table th {
+    color: #888;
+    font-weight: 600;
+    background: #fafbfc;
+}
+
+.tipo-cita {
+    background: #f0f8ff;
+    color: #007bff;
+    border-radius: 8px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.acciones {
+    font-size: 1.5rem;
+    color: #bbb;
+    cursor: pointer;
+}
+
+@media (max-width: 1200px) {
+    .dashboard-container {
+        padding: 2rem 1rem;
     }
-    .login-container {
-        width: 95vw;
-        padding: 1.5rem 0.5rem;
+    .summary-card {
+        min-width: 220px;
+        padding: 1.2rem 1rem;
+    }
+    .next-appointment-card,
+    .appointments-list-card {
+        padding: 1.2rem 0.7rem;
+    }
+    .search-container {
+        padding: 1.5rem 1rem;
+        min-width: 700px;
     }
 }

@@ -139,6 +139,7 @@ async def register_appointment(
     fecha: str = Form(...),
     hora: str = Form(...),
     motivo: str = Form(...),
+    tipo: str = Form(...),
     diagnostico: str = Form(...),
     procedimiento: str = Form(...)
 ):
@@ -152,9 +153,11 @@ async def register_appointment(
     paciente_id = pacientes_list[0].id
     cita = Cita(
         paciente_id=paciente_id,
+        paciente_nombre=paciente_nombre,
         fecha=fecha,
         hora=hora,
         motivo=motivo,
+        tipo=tipo,
         diagnostico=diagnostico,
         procedimiento=procedimiento
     )
@@ -168,15 +171,18 @@ async def register_appointment(
 async def search_patient_form(request: Request):
     if not is_authenticated(request):
         return RedirectResponse("/")
-    return templates.TemplateResponse("search_patient.html", {"request": request})
+    return RedirectResponse("/patients/search")
 
 # Procesar búsqueda de pacientes
 @app.get("/patients/search", response_class=HTMLResponse)
 async def search_patient(request: Request, nombre: str = ""):
     if not is_authenticated(request):
         return RedirectResponse("/")
-    docs = db.collection('pacientes').where('nombre', '==', nombre).stream()
     pacientes_list = []
+    if nombre:
+        docs = db.collection('pacientes').where('nombre', '==', nombre).stream()
+    else:
+        docs = db.collection('pacientes').stream()
     for doc in docs:
         data = doc.to_dict()
         data['id'] = doc.id  # Agrega el ID del documento Firestore
@@ -198,25 +204,57 @@ async def search_appointment_form(
     citas_list = []
     error = None
     
-    #Búsqueda por ID del paciente
-    if paciente_id:
-        docs = db.collection('citas').where('paciente_id', '==', paciente_id).stream()
+    # Búsqueda por ID del paciente
+    if not paciente_id and not paciente_nombre and not fecha:
+        docs = db.collection('citas') \
+                 .order_by("fecha") \
+                 .order_by("hora") \
+                 .stream()
         citas_list = [Cita(**doc.to_dict()) for doc in docs]
-    #Búsqueda por nombre del paciente
+
+    # Búsqueda por ID específico
+    elif paciente_id:
+        docs = db.collection('citas') \
+                 .where('paciente_id', '==', paciente_id) \
+                 .stream()
+        citas_list = [Cita(**doc.to_dict()) for doc in docs]
+
+    # Búsqueda por nombre de paciente
     elif paciente_nombre:
-        pacientes = db.collection('pacientes').where('nombre', '==', paciente_nombre).stream()
+        pacientes = db.collection('pacientes') \
+                      .where('nombre', '==', paciente_nombre) \
+                      .stream()
         pacientes_list = [p for p in pacientes]
         if pacientes_list:
             paciente_id = pacientes_list[0].id
-            docs = db.collection('citas').where('paciente_id', '==', paciente_id).stream()
+            docs = db.collection('citas') \
+                     .where('paciente_id', '==', paciente_id) \
+                     .stream()
             citas_list = [Cita(**doc.to_dict()) for doc in docs]
-    #Búsqueda por fecha        
+
+    # Búsqueda por fecha
     elif fecha:
-        docs = db.collection('citas').where('fecha', '==', fecha).stream()
-        citas_list = [Cita(**doc.to_dict()) for doc in docs]        
-    if not citas_list:    
+        docs = db.collection('citas') \
+                 .where('fecha', '==', fecha) \
+                 .stream()
+        citas_list = [Cita(**doc.to_dict()) for doc in docs]
+
+    # Si no se encontraron citas
+    if not citas_list:
         error = "No se encontraron citas para ese paciente."
-    return templates.TemplateResponse("search_appointment.html", {"request": request, "citas": citas_list, "error": error})
+
+    pacientes_docs = db.collection('pacientes').stream()
+    pacientes_list = [Paciente(**{**doc.to_dict(), "id": doc.id}) for doc in pacientes_docs]
+
+    return templates.TemplateResponse(
+        "search_appointment.html",
+        {
+            "request": request,
+            "citas": citas_list,
+            "pacientes_list": pacientes_list,
+            "error": error
+        }
+    )
 
 @app.get("/records/{paciente_id}", response_class=HTMLResponse)
 async def expediente_paciente(request: Request, paciente_id: str):

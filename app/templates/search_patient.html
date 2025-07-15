@@ -27,26 +27,47 @@
             <img src="../static/logout-2.svg" alt="Cerrar sesión" class="icon-menu">Cerrar sesión
         </a>
     </nav>
-    <div class="login-container">
-        <h1>Buscar Paciente</h1>
-        <form method="get" action="/patients/search">
-            <input type="text" name="nombre" placeholder="Nombre del paciente" required>
-            <button type="submit">Buscar</button>
-        </form>
-        <div class="cards-container">
-            {% if pacientes %}
-                {% for paciente in pacientes %}
-                    <a href="/records/{{ paciente.id }}" class="card card-link">
-                        <h3>{{ paciente.nombre }}</h3>
-                        <p><strong>Email:</strong> {{ paciente.email }}</p>
-                        <p><strong>Teléfono:</strong> {{ paciente.telefono }}</p>
-                        <p><strong>Edad:</strong> {{ paciente.edad }}</p>
-                        <p><strong>Sexo:</strong> {{ paciente.sexo }}</p>
-                    </a>
-                {% endfor %}
-            {% elif error %}
-                <p class="error">{{ error }}</p>
-            {% endif %}
+    <div class="search-container">
+        <h1>Buscar pacientes</h1>
+        <div class="search-bar">
+            <form method="get" action="/patients/search" class="search-form">
+                <input type="text" name="nombre" placeholder="Buscar paciente por nombre..." required>
+                <button type="submit" class="filter-btn">Buscar</button>
+            </form>
+        </div>
+        <div class="table-responsive">
+            <table class="appointments-table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Teléfono</th>
+                        <th scope="col">Edad</th>
+                        <th scope="col">Sexo</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if pacientes %}
+                        {% for paciente in pacientes %}
+                            <tr>
+                                <td>{{ paciente.nombre }}</td>
+                                <td>{{ paciente.email }}</td>
+                                <td>{{ paciente.telefono }}</td>
+                                <td>{{ paciente.edad }}</td>
+                                <td>{{ paciente.sexo }}</td>
+                                <td>
+                                    <a href="/records/{{ paciente.id }}" class="acciones">Ver expediente</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% elif error %}
+                        <tr>
+                            <td colspan="6"><p class="error">{{ error }}</p></td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
